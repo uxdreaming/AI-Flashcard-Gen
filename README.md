@@ -64,3 +64,7 @@ AI-Flashcard-Generator/
 ├── docs/             # Project documentation
 └── README.md
 ```
+
+## Future vision
+
+In a later stage of the project, we plan to scale the application by integrating a multimodal generative model. This will allow the AI to process not only text, but also images, diagrams and drawings. A student will be able to capture a handwritten note, a visual sketch or a diagram, and the AI will automatically extract key concepts, generating flashcards from any format. This evolution will make learning truly multimodal, breaking format barriers and offering a comprehensive study experience adaptable to any need.
