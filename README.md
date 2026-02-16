@@ -1,6 +1,6 @@
 # AI Flashcard Generator
 
-Smart flashcard generator optimized for spaced repetition from PDF/text documents.
+Smart flashcard generator optimized for spaced repetition from PDF/text documents. Built for anyone who studies — whether you're a student, a professional learning new skills, or a curious mind exploring new topics. Drop your material, get study-ready flashcards.
 
 ## Idea
 
@@ -9,13 +9,6 @@ Upload a PDF (notes, papers, documentation) and the system will:
 2. Generate question/answer pairs as flashcards
 3. Optimize flashcards for retention using spaced repetition principles
 4. Export in formats compatible with Anki and other apps
-
-## Who is this for
-
-- **Language learners** - Upload a text in any language and generate vocabulary and grammar flashcards in context
-- **University students** - Turn class notes or book chapters into ready-to-use review material
-- **Technical professionals** - Documentation, certifications, new frameworks: extract what matters without building cards manually
-- **Self-learners** - Anyone studying with their own material who wants to accelerate retention
 
 ## Use cases
 
@@ -26,24 +19,16 @@ Upload a PDF (notes, papers, documentation) and the system will:
 | Studying for AWS certification | Official documentation PDF | Flashcards per service with exam-style questions |
 | Reviewing a research paper | Paper from arxiv | Cards with hypothesis, methodology, key findings and limitations |
 
-## Proposed stack
-
-- **Python** - Backend and processing
-- **OpenAI API / Claude API** - Content generation and analysis
-- **PyPDF2 / pdfplumber** - PDF text extraction
-- **Streamlit** - Quick demo UI
-- **JSON/CSV** - Flashcard export
-
 ## Roadmap
 
-### Phase 1 - MVP (Session 1)
+### Phase 1 - MVP
 - [ ] Text extraction from PDF
 - [ ] Prompt engineering to generate flashcards from text
 - [ ] Basic JSON/CSV output
 - [ ] End-to-end working script
 
 ### Phase 2 - UI & Improvements
-- [ ] Streamlit interface for file uploads
+- [ ] Interface for file uploads
 - [ ] Difficulty and flashcard count selector
 - [ ] Flashcard preview before export
 - [ ] Anki export format (.apkg)
