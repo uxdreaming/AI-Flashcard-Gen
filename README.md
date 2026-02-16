@@ -1,4 +1,4 @@
-# AI Flashcard Generator
+# AI Flashcard Gen
 
 Smart flashcard generator optimized for spaced repetition from any study material. Built for anyone who studies — whether you're a student, a professional learning new skills, or a curious mind exploring new topics. Drop your material in any format, receive ready-to-use flashcards.
 
@@ -57,7 +57,7 @@ No matter how you take notes — typing or writing by hand — the tool adapts t
 ## Structure
 
 ```
-AI-Flashcard-Generator/
+AI-Flashcard-Gen/
 ├── src/              # Source code
 ├── data/             # Test files and generated outputs
 │   └── samples/      # Example inputs (OCR, screenshots)
