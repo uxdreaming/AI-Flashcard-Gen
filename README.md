@@ -1,69 +1,65 @@
 # AI Flashcard Generator
 
-Generador inteligente de flashcards optimizadas para spaced repetition a partir de documentos PDF/texto.
+Smart flashcard generator optimized for spaced repetition from PDF/text documents.
 
 ## Idea
 
-Subís un PDF (apuntes, papers, documentación) y el sistema:
-1. Extrae los conceptos clave del documento
-2. Genera pares pregunta/respuesta como flashcards
-3. Optimiza las flashcards para retención usando principios de spaced repetition
-4. Exporta en formatos compatibles con Anki u otras apps
+Upload a PDF (notes, papers, documentation) and the system will:
+1. Extract key concepts from the document
+2. Generate question/answer pairs as flashcards
+3. Optimize flashcards for retention using spaced repetition principles
+4. Export in formats compatible with Anki and other apps
 
-## Para quién es esto
+## Who is this for
 
-- **Estudiantes de idiomas** - Subís un texto en inglés/francés/etc y generás flashcards de vocabulario y gramática en contexto
-- **Estudiantes universitarios** - Convertís apuntes de clase o capítulos de libros en material de repaso listo para usar
-- **Profesionales técnicos** - Documentación, certificaciones, frameworks nuevos: extraés lo clave sin armar las cards a mano
-- **Autodidactas** - Cualquier persona que estudie con material propio y quiera acelerar la retención
+- **Language learners** - Upload a text in any language and generate vocabulary and grammar flashcards in context
+- **University students** - Turn class notes or book chapters into ready-to-use review material
+- **Technical professionals** - Documentation, certifications, new frameworks: extract what matters without building cards manually
+- **Self-learners** - Anyone studying with their own material who wants to accelerate retention
 
-## Casos de uso
+## Use cases
 
-| Escenario | Input | Output |
-|-----------|-------|--------|
-| Preparar un examen de biología | PDF de 40 páginas del capítulo | 50 flashcards con conceptos, definiciones y relaciones |
-| Aprender vocabulario en inglés | Artículo de The Guardian | Cards con palabras en contexto, significado y ejemplo de uso |
-| Estudiar para certificación AWS | Documentación oficial en PDF | Flashcards por servicio con preguntas tipo examen |
-| Repasar un paper de investigación | Paper de arxiv | Cards con hipótesis, metodología, hallazgos clave y limitaciones |
+| Scenario | Input | Output |
+|----------|-------|--------|
+| Preparing a biology exam | 40-page chapter PDF | 50 flashcards with concepts, definitions and relationships |
+| Learning English vocabulary | Article from The Guardian | Cards with words in context, meaning and usage examples |
+| Studying for AWS certification | Official documentation PDF | Flashcards per service with exam-style questions |
+| Reviewing a research paper | Paper from arxiv | Cards with hypothesis, methodology, key findings and limitations |
 
-## Stack propuesto
+## Proposed stack
 
-- **Python** - Backend y procesamiento
-- **OpenAI API / Claude API** - Generación y análisis de contenido
-- **PyPDF2 / pdfplumber** - Extracción de texto de PDFs
-- **Streamlit** - UI rápida para demo
-- **JSON/CSV** - Exportación de flashcards
+- **Python** - Backend and processing
+- **OpenAI API / Claude API** - Content generation and analysis
+- **PyPDF2 / pdfplumber** - PDF text extraction
+- **Streamlit** - Quick demo UI
+- **JSON/CSV** - Flashcard export
 
 ## Roadmap
 
-### Fase 1 - MVP (Sesión 1)
-- [ ] Extracción de texto desde PDF
-- [ ] Prompt engineering para generar flashcards desde texto
-- [ ] Output básico en JSON/CSV
-- [ ] Script funcional end-to-end
+### Phase 1 - MVP (Session 1)
+- [ ] Text extraction from PDF
+- [ ] Prompt engineering to generate flashcards from text
+- [ ] Basic JSON/CSV output
+- [ ] End-to-end working script
 
-### Fase 2 - UI & Mejoras
-- [ ] Interfaz con Streamlit para subir archivos
-- [ ] Selector de dificultad y cantidad de flashcards
-- [ ] Preview de flashcards antes de exportar
-- [ ] Exportación formato Anki (.apkg)
+### Phase 2 - UI & Improvements
+- [ ] Streamlit interface for file uploads
+- [ ] Difficulty and flashcard count selector
+- [ ] Flashcard preview before export
+- [ ] Anki export format (.apkg)
 
-### Fase 3 - Inteligencia
-- [ ] Detección automática de temas y subtemas
-- [ ] Generación de flashcards con contexto visual (diagramas, tablas)
-- [ ] Modo "examen" que genera preguntas de opción múltiple
-- [ ] Análisis de dificultad por concepto
+### Phase 3 - Intelligence
+- [ ] Automatic topic and subtopic detection
+- [ ] Flashcard generation with visual context (diagrams, tables)
+- [ ] Quiz mode with multiple choice questions
+- [ ] Difficulty analysis per concept
 
-## Estructura
+## Structure
 
 ```
 AI-Flashcard-Generator/
-├── src/           # Código fuente
-├── data/          # PDFs de prueba y outputs generados
-├── docs/          # Documentación del proyecto
+├── src/           # Source code
+├── data/          # Test PDFs and generated outputs
+├── docs/          # Project documentation
 └── README.md
 ```
-
-## Proyecto para
-
-Formación **AI for UXers** - Febrero 2026
