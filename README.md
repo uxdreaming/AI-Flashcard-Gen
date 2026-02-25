@@ -36,17 +36,17 @@ No matter how you take notes — typing or writing by hand — the tool adapts t
 ## Roadmap
 
 ### Phase 1 - MVP
-- [ x ] Text extraction from PDF
-- [ x ] Prompt engineering to generate flashcards from text
-- [ x ] Basic JSON/CSV output
-- [ x ] End-to-end working script
+- [x] Text extraction from PDF
+- [x] Prompt engineering to generate flashcards from text
+- [x] Basic JSON/CSV output
+- [x] End-to-end working script
 
 ### Phase 2 - Multi-format input
-- [ x ] OCR for handwritten notes (image to text)
-- [ x ] Support for .txt, .md formats
+- [x] OCR for handwritten notes (image to text)
+- [x] Support for .txt, .md formats
 
 ### Phase 3 - UI & Improvements
-- [ x ] Interface for file uploads
+- [x] Interface for file uploads
 - [ ] Difficulty and flashcard count selector
 - [ ] Flashcard preview before export
 - [ ] Anki export format (.apkg)
