@@ -57,6 +57,23 @@ No matter how you take notes — typing or writing by hand — the tool adapts t
 - [ ] Quiz mode with multiple choice questions
 - [ ] Difficulty analysis per concept
 
+## Getting started
+
+```bash
+git clone https://github.com/uxdreaming/AI-Flashcard-Gen.git
+cd AI-Flashcard-Gen
+npm install
+cp .env.example .env.local
+```
+
+Add your [Google Gemini API key](https://aistudio.google.com/apikey) to `.env.local`, then:
+
+```bash
+npm run dev
+```
+
+Open [http://localhost:3000](http://localhost:3000) in your browser.
+
 ## Structure
 
 ```
