@@ -25,7 +25,8 @@ body {
   overflow: hidden;
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* Study mode: break out of the layout shell */
@@ -36,7 +37,7 @@ body {
   background: var(--background);
 }
 
-/* 3D Flip animation — fixed height, both faces fill the container */
+/* 3D Flip animation */
 .card-flip-container {
   perspective: 1200px;
 }
@@ -44,7 +45,7 @@ body {
 .card-flip-inner {
   position: relative;
   height: 100%;
-  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: transform 0.4s cubic-bezier(0.25, 0.1, 0.25, 1);
   transform-style: preserve-3d;
 }
 
@@ -59,5 +60,32 @@ body {
 }
 
 .card-flip-back {
+  transform: rotateY(180deg);
+}
+
+/* Gallery mini-card flip */
+.mini-card-flip-container {
+  perspective: 800px;
+}
+
+.mini-card-flip-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.35s cubic-bezier(0.25, 0.1, 0.25, 1);
+  transform-style: preserve-3d;
+}
+
+.mini-card-flip-inner.flipped {
+  transform: rotateY(180deg);
+}
+
+.mini-card-flip-face {
+  position: absolute;
+  inset: 0;
+  backface-visibility: hidden;
+}
+
+.mini-card-flip-back {
   transform: rotateY(180deg);
 }

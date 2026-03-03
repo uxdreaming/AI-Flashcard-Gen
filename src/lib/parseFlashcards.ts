@@ -5,27 +5,26 @@ interface RawFlashcard {
 }
 
 /**
- * Extracts flashcards from structured text using heuristics.
- * Handles: definitions (term: description), bullet lists with sub-items,
- * numbered lists, headers as categories, and key takeaways.
+ * Extracts flashcards from text using heuristics.
+ * Handles: definitions, bullet lists, numbered lists, headers as categories,
+ * key takeaways, markdown tables, and plain paragraph text as last resort.
  */
 export function parseFlashcards(text: string): RawFlashcard[] {
   const flashcards: RawFlashcard[] = [];
   const rawLines = text.split("\n");
 
-  let currentCategory = "General";
+  let currentCategory = "Concepts";
   let i = 0;
 
   while (i < rawLines.length) {
     const line = rawLines[i].trim();
 
-    // Skip empty lines and markdown artifacts
     if (!line || line === "```" || line === "---" || line === "|||" || line.match(/^\|[-\s|]+\|$/)) {
       i++;
       continue;
     }
 
-    // Detect category from headers (# Header or TITLE - Subtitle)
+    // Detect category from headers
     const mdHeader = line.match(/^#{1,3}\s+(.+)/);
     if (mdHeader) {
       const h = mdHeader[1].trim();
@@ -41,7 +40,6 @@ export function parseFlashcards(text: string): RawFlashcard[] {
       continue;
     }
 
-    // Pattern: section header ending with colon (e.g. "User Research Methods:")
     const sectionHeader = line.match(/^([A-Za-z][^:]{3,50}):\s*$/);
     if (sectionHeader) {
       currentCategory = sectionHeader[1].trim();
@@ -49,7 +47,7 @@ export function parseFlashcards(text: string): RawFlashcard[] {
       continue;
     }
 
-    // Pattern: "Key takeaway:" or similar callouts
+    // Pattern: "Key takeaway:" callouts
     const takeawayMatch = line.match(/^[-*]?\s*(?:key\s+)?takeaway:\s*(.+)/i);
     if (takeawayMatch) {
       let answer = takeawayMatch[1].trim();
@@ -66,18 +64,16 @@ export function parseFlashcards(text: string): RawFlashcard[] {
       continue;
     }
 
-    // Pattern: "- Term: definition" on main bullets
+    // Pattern: "- Term: definition"
     const bulletDef = line.match(/^[-*]\s+(.+?):\s+(.{10,})$/);
     if (bulletDef) {
       const term = bulletDef[1].trim();
       let answer = bulletDef[2].trim();
 
-      // Collect ONLY indented sub-items (lines starting with spaces + bullet)
       const subItems: string[] = [];
       let j = i + 1;
       while (j < rawLines.length) {
         const nextRaw = rawLines[j];
-        // Stop at empty lines or non-indented lines
         if (!nextRaw.trim()) break;
         if (!nextRaw.match(/^\s{2,}[*+-]\s+/)) break;
         subItems.push(nextRaw.trim().replace(/^[*+-]\s+/, "").trim());
@@ -100,7 +96,7 @@ export function parseFlashcards(text: string): RawFlashcard[] {
       continue;
     }
 
-    // Pattern: numbered lists (group of 3+ consecutive items)
+    // Pattern: numbered lists (3+ consecutive items)
     const numberedMatch = line.match(/^(\d+)[.)]\s+(.+)/);
     if (numberedMatch) {
       const numberedItems: string[] = [];
@@ -117,23 +113,13 @@ export function parseFlashcards(text: string): RawFlashcard[] {
           answer: numberedItems.map((item, idx) => `${idx + 1}. ${item}`).join(", "),
           category: currentCategory,
         });
-
-        numberedItems.forEach((item, idx) => {
-          if (item.length > 15) {
-            flashcards.push({
-              question: `What is #${idx + 1} in "${currentCategory}"?`,
-              answer: item,
-              category: currentCategory,
-            });
-          }
-        });
       }
 
       i = j;
       continue;
     }
 
-    // Pattern: markdown table rows (| Front | Back |)
+    // Pattern: markdown table rows
     const tableMatch = line.match(/^\|\s*(.+?)\s*\|\s*(.+?)\s*\|$/);
     if (tableMatch) {
       const col1 = tableMatch[1].trim();
@@ -153,5 +139,94 @@ export function parseFlashcards(text: string): RawFlashcard[] {
     i++;
   }
 
+  // FALLBACK: if structured parsing found very few cards, extract from paragraphs
+  if (flashcards.length < 3) {
+    const paragraphCards = extractFromParagraphs(text);
+    flashcards.push(...paragraphCards);
+  }
+
   return flashcards;
+}
+
+/**
+ * Last-resort extraction: splits text into meaningful paragraphs
+ * and generates Q&A from sentences.
+ */
+function extractFromParagraphs(text: string): RawFlashcard[] {
+  const cards: RawFlashcard[] = [];
+
+  // Clean up the text
+  const cleaned = text
+    .replace(/\r\n/g, "\n")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
+
+  // Split into paragraphs (2+ newlines or significant breaks)
+  const paragraphs = cleaned
+    .split(/\n\n+/)
+    .map((p) => p.replace(/\n/g, " ").replace(/\s+/g, " ").trim())
+    .filter((p) => p.length > 40 && /[a-zA-ZáéíóúñÁÉÍÓÚÑ]/.test(p));
+
+  // Try to detect a category from the first few lines
+  let category = "Concepts";
+  const firstLines = cleaned.split("\n").slice(0, 5);
+  for (const line of firstLines) {
+    const trimmed = line.trim();
+    if (trimmed.length > 3 && trimmed.length < 60 && !trimmed.includes(".")) {
+      category = trimmed;
+      break;
+    }
+  }
+
+  // Generate cards from paragraphs
+  for (const para of paragraphs.slice(0, 20)) {
+    // Split paragraph into sentences
+    const sentences = para
+      .split(/(?<=[.!?])\s+/)
+      .filter((s) => s.length > 15);
+
+    if (sentences.length === 0) continue;
+
+    // Strategy 1: first sentence as question context, rest as answer
+    if (sentences.length >= 2) {
+      const firstSentence = sentences[0].replace(/[.!?]$/, "");
+      const restSentences = sentences.slice(1).join(" ");
+
+      // Try to form a "What" question from the first sentence
+      let question: string;
+      if (firstSentence.length < 100) {
+        question = `What can you tell about: ${firstSentence}?`;
+      } else {
+        // Use first meaningful phrase
+        const shortPhrase = firstSentence.slice(0, 60).replace(/\s\S*$/, "");
+        question = `Explain: ${shortPhrase}...`;
+      }
+
+      if (restSentences.length > 10) {
+        cards.push({
+          question,
+          answer: restSentences.slice(0, 300),
+          category,
+        });
+      }
+    }
+
+    // Strategy 2: if paragraph is a single long sentence, make it an "explain" card
+    if (sentences.length === 1 && sentences[0].length > 50) {
+      const sentence = sentences[0];
+      // Find key terms (capitalized words that aren't sentence starters)
+      const keyTerms = sentence.match(/(?<=\s)[A-Z][a-z]{3,}/g);
+      if (keyTerms && keyTerms.length > 0) {
+        cards.push({
+          question: `What is ${keyTerms[0]}?`,
+          answer: sentence.slice(0, 300),
+          category,
+        });
+      }
+    }
+
+    if (cards.length >= 15) break;
+  }
+
+  return cards;
 }

@@ -4,6 +4,8 @@ import type { GenerationStep } from "@/types/flashcard";
 
 interface LoadingIndicatorProps {
   step: GenerationStep;
+  count?: number;
+  onCancel?: () => void;
 }
 
 const steps: { key: GenerationStep; label: string }[] = [
@@ -12,7 +14,11 @@ const steps: { key: GenerationStep; label: string }[] = [
   { key: "generating", label: "Generating flashcards with AI..." },
 ];
 
-export default function LoadingIndicator({ step }: LoadingIndicatorProps) {
+export default function LoadingIndicator({
+  step,
+  count,
+  onCancel,
+}: LoadingIndicatorProps) {
   const currentIndex = steps.findIndex((s) => s.key === step);
 
   return (
@@ -22,6 +28,10 @@ export default function LoadingIndicator({ step }: LoadingIndicatorProps) {
         {steps.map((s, i) => {
           const isActive = s.key === step;
           const isDone = i < currentIndex;
+          let label = s.label;
+          if (s.key === "generating" && isActive && count) {
+            label = `Generating ~${count} flashcards...`;
+          }
 
           return (
             <div key={s.key} className="flex items-center gap-3 py-2">
@@ -51,7 +61,7 @@ export default function LoadingIndicator({ step }: LoadingIndicatorProps) {
                       : "text-zinc-400 dark:text-zinc-500"
                 }`}
               >
-                {s.label}
+                {label}
               </span>
               {isActive && (
                 <div className="ml-auto h-4 w-4 animate-spin rounded-full border-2 border-zinc-200 border-t-blue-600" />
@@ -59,6 +69,21 @@ export default function LoadingIndicator({ step }: LoadingIndicatorProps) {
             </div>
           );
         })}
+
+        {/* Estimate + Cancel */}
+        <div className="mt-4 flex items-center justify-between">
+          <p className="text-xs text-zinc-400 dark:text-zinc-500">
+            This usually takes 5-15 seconds
+          </p>
+          {onCancel && (
+            <button
+              onClick={onCancel}
+              className="rounded-lg border border-zinc-300 px-3 py-1.5 text-xs font-medium text-zinc-500 transition-colors hover:bg-zinc-100 hover:text-zinc-700 dark:border-zinc-600 dark:text-zinc-400 dark:hover:bg-zinc-800"
+            >
+              Cancel
+            </button>
+          )}
+        </div>
       </div>
 
       {/* Skeleton cards */}

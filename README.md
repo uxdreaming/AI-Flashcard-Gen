@@ -1,92 +1,226 @@
-# AI Flashcard Gen
+<p align="center">
+  <img src="docs/cover.png" alt="AI Flashcard Gen" width="100%" />
+</p>
 
-![AI Flashcard Gen](docs/cover.png)
-![AI Flashcard Gen](docs/Flashcards.png)
+<h1 align="center">AI Flashcard Gen</h1>
 
-Smart flashcard generator optimized for spaced repetition from any study material. Built for anyone who studies — whether you're a student, a professional learning new skills, or a curious mind exploring new topics. Drop your material in any format, receive ready-to-use flashcards.
+<p align="center">
+  <strong>Turn any document into smart flashcards with AI-powered extraction and spaced repetition.</strong>
+</p>
 
-## Idea
+<p align="center">
+  <img src="https://img.shields.io/badge/Next.js-16-black?logo=next.js" alt="Next.js" />
+  <img src="https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=white" alt="React" />
+  <img src="https://img.shields.io/badge/Tailwind-4-38BDF8?logo=tailwindcss&logoColor=white" alt="Tailwind" />
+  <img src="https://img.shields.io/badge/Gemini_AI-2.0_Flash-4285F4?logo=google&logoColor=white" alt="Gemini" />
+  <img src="https://img.shields.io/badge/TypeScript-5-3178C6?logo=typescript&logoColor=white" alt="TypeScript" />
+</p>
 
-Upload your study material and the system will:
-1. Extract key concepts from the source (PDF, handwritten notes, audio, or plain text)
-2. Generate question/answer pairs as flashcards
-3. Optimize flashcards for retention using spaced repetition principles
-4. Export in formats compatible with Anki and other apps
+---
 
-## Supported inputs
+## About
 
-| Input type | How it works |
-|------------|--------------|
-| **PDF documents** | Direct text extraction from any PDF file |
-| **Handwritten notes** | OCR converts photos of handwritten notes into text |
-| **Other text formats** | Support for .txt, .md, .docx and other common formats |
+AI Flashcard Gen is a study tool that extracts key concepts from your documents and generates ready-to-study flashcards. Upload PDFs, text or markdown files — the AI handles the rest.
 
-No matter how you take notes — typing or writing by hand — the tool adapts to your workflow.
+Built for students, professionals and anyone who learns. Drop your material, get flashcards, study with spaced repetition.
 
-## Use cases
+<p align="center">
+  <img src="docs/Flashcards.png" alt="Flashcards Preview" width="100%" />
+</p>
 
-| Scenario | Input | Output |
-|----------|-------|--------|
-| Preparing a biology exam | 40-page chapter PDF | 50 flashcards with concepts, definitions and relationships |
-| Learning English vocabulary | Article from The Guardian | Cards with words in context, meaning and usage examples |
-| Studying for AWS certification | Official documentation PDF | Flashcards per service with exam-style questions |
-| Reviewing a research paper | Paper from arxiv | Cards with hypothesis, methodology, key findings and limitations |
-| Quick review after class | Photo of handwritten notes | Cards with key concepts extracted via OCR |
+---
 
-## Roadmap
+## Features
 
-### Phase 1 - MVP
-- [x] Text extraction from PDF
-- [x] Prompt engineering to generate flashcards from text
-- [x] Basic JSON/CSV output
-- [x] End-to-end working script
+| | Feature | Description |
+|---|---|---|
+| :brain: | **AI Extraction** | Gemini 2.0 Flash analyzes your documents and generates question/answer pairs automatically |
+| :repeat: | **Spaced Repetition** | SM-2 algorithm schedules optimal review intervals — study what you need, when you need it |
+| :card_index: | **Single Card View** | Navigate flashcards one at a time with flip animations, mastery tracking and keyboard shortcuts |
+| :framed_picture: | **Gallery View** | Grid layout to browse all cards at a glance, with inline flip and sorting by category, difficulty or status |
+| :globe_with_meridians: | **Concept Map** | Interactive force-directed graph showing relationships between concepts and categories |
+| :speaker: | **Text-to-Speech** | Listen to questions and answers with auto language detection (English/Spanish) |
+| :file_folder: | **Multi-file Upload** | Drag & drop multiple files at once — PDF, TXT and Markdown supported |
+| :bar_chart: | **Study Stats** | Track your progress with mastery counts, due cards and review streaks |
+| :first_quarter_moon: | **Dark Mode** | Full light/dark theme support |
+| :floppy_disk: | **Local Storage** | Your flashcards persist in the browser — no account needed |
+| :shield: | **Smart Fallback** | If AI generation fails, a heuristic parser extracts cards from text structure |
 
-### Phase 2 - Multi-format input
-- [x] OCR for handwritten notes (image to text)
-- [x] Support for .txt, .md formats
+---
 
-### Phase 3 - UI & Improvements
-- [x] Interface for file uploads
-- [ ] Difficulty and flashcard count selector
-- [ ] Flashcard preview before export
-- [ ] Anki export format (.apkg)
+## Tech Stack
 
-### Phase 4 - Intelligence
-- [ ] Automatic topic and subtopic detection
-- [ ] Flashcard generation with visual context (diagrams, tables)
-- [ ] Quiz mode with multiple choice questions
-- [ ] Difficulty analysis per concept
+| Layer | Technology |
+|---|---|
+| Framework | Next.js 16 with Turbopack |
+| Frontend | React 19, Tailwind CSS 4 |
+| State | Zustand 5 |
+| AI | Google Gemini 2.0 Flash (`@google/genai`) |
+| PDF | pdf-parse with raw bytes fallback |
+| Audio | Web Speech API (native, zero dependencies) |
+| Language | TypeScript 5 |
 
-## Getting started
+---
+
+## Getting Started
+
+### Prerequisites
+
+- **Node.js** 18+ installed ([download](https://nodejs.org/))
+- **Google Gemini API key** — free at [Google AI Studio](https://aistudio.google.com/apikey)
+
+### 1. Clone the repository
 
 ```bash
 git clone https://github.com/uxdreaming/AI-Flashcard-Gen.git
 cd AI-Flashcard-Gen
+```
+
+### 2. Install dependencies
+
+```bash
 npm install
+```
+
+### 3. Configure environment
+
+```bash
 cp .env.example .env.local
 ```
 
-Add your [Google Gemini API key](https://aistudio.google.com/apikey) to `.env.local`, then:
+Open `.env.local` and add your Gemini API key:
+
+```env
+GEMINI_API_KEY=your_api_key_here
+```
+
+### 4. Run the development server
 
 ```bash
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) in your browser.
+### 5. Open in browser
 
-## Structure
+Navigate to **[http://localhost:3000](http://localhost:3000)** and start uploading your study material.
+
+---
+
+## Supported Formats
+
+| Format | Extension | Details |
+|---|---|---|
+| :page_facing_up: PDF | `.pdf` | Text extraction with raw bytes fallback for complex files |
+| :memo: Plain text | `.txt` | Direct text processing |
+| :bookmark_tabs: Markdown | `.md` | Supports headers, lists, tables and structured content |
+
+**Max file size:** 10 MB per file. Multiple files can be uploaded at once.
+
+---
+
+## How It Works
+
+```
+Document Upload  →  Text Extraction  →  AI Analysis  →  Flashcard Generation
+     .pdf              pdf-parse           Gemini 2.0        Q&A pairs with
+     .txt              raw fallback        Flash              categories &
+     .md                                                      difficulty
+```
+
+1. **Upload** — Drag & drop or browse for files (PDF, TXT, MD)
+2. **Configure** — Choose difficulty level (Basic / Intermediate / Advanced) and card count (5-30)
+3. **Generate** — AI extracts key concepts and creates flashcards
+4. **Study** — Review cards in single view, gallery or concept map with spaced repetition
+5. **Listen** — Use text-to-speech to hear questions and answers
+6. **Track** — Monitor mastery progress with "Study Now" for due reviews
+
+---
+
+## Project Structure
 
 ```
 AI-Flashcard-Gen/
-├── src/              # Source code
-├── data/             # Test files and generated outputs
-│   └── samples/      # Example inputs (OCR, screenshots)
-├── docs/             # Project documentation
-└── README.md
+├── src/
+│   ├── app/
+│   │   ├── api/generate/     # API route for flashcard generation
+│   │   ├── layout.tsx        # Root layout with Geist fonts
+│   │   ├── page.tsx          # Landing page & study mode entry
+│   │   └── globals.css       # Global styles & animations
+│   ├── components/
+│   │   ├── FlashcardItem.tsx  # Single card with flip animation
+│   │   ├── FlashcardList.tsx  # Main study interface & sidebar
+│   │   ├── GalleryView.tsx    # Grid view with mini-cards
+│   │   ├── ConceptMap.tsx     # Force-directed concept graph
+│   │   ├── FileUpload.tsx     # Drag & drop upload zone
+│   │   ├── LoadingIndicator.tsx
+│   │   ├── StudyStats.tsx     # Progress statistics
+│   │   └── ThemeToggle.tsx    # Dark/light mode switch
+│   ├── hooks/
+│   │   └── useAudio.ts       # Text-to-speech hook
+│   ├── lib/
+│   │   ├── gemini.ts          # Gemini AI integration
+│   │   ├── extractText.ts     # PDF & text extraction
+│   │   ├── parseFlashcards.ts # Heuristic fallback parser
+│   │   ├── spacedRepetition.ts # SM-2 algorithm
+│   │   ├── categoryColors.ts  # Muted color palette
+│   │   └── exportCards.ts     # CSV/JSON export
+│   ├── store/
+│   │   └── useFlashcardStore.ts # Zustand state management
+│   └── types/
+│       └── flashcard.ts       # TypeScript interfaces
+├── docs/                      # Screenshots & assets
+├── .env.example               # Environment template
+└── package.json
 ```
 
-## Future vision
+---
 
-In a later stage of the project, we plan to scale the application by integrating a multimodal generative model. This will allow the AI to process not only text, but also images, diagrams and drawings. A student will be able to capture a handwritten note, a visual sketch or a diagram, and the AI will automatically extract key concepts, generating flashcards from any format. This evolution will make learning truly multimodal, breaking format barriers and offering a comprehensive study experience adaptable to any need.
+## Scripts
 
-_Maintained by [uxdreaming](https://github.com/uxdreaming)_
+| Command | Description |
+|---|---|
+| `npm run dev` | Start development server with Turbopack |
+| `npm run build` | Production build |
+| `npm run start` | Start production server |
+| `npm run lint` | Run ESLint |
+
+---
+
+## Completed Features
+
+| | Feature |
+|---|---|
+| :white_check_mark: | Text extraction from PDF with raw bytes fallback |
+| :white_check_mark: | AI flashcard generation with Gemini 2.0 Flash |
+| :white_check_mark: | Support for PDF, TXT and Markdown files |
+| :white_check_mark: | Drag & drop multi-file upload with validation |
+| :white_check_mark: | Difficulty selector (Basic / Intermediate / Advanced) |
+| :white_check_mark: | Flashcard count selector (5, 10, 15, 20, 30) |
+| :white_check_mark: | Single card view with 3D flip animation |
+| :white_check_mark: | Gallery view with mini-card grid and inline flip |
+| :white_check_mark: | Interactive concept map with force-directed graph |
+| :white_check_mark: | Text-to-speech with auto language detection |
+| :white_check_mark: | SM-2 spaced repetition algorithm |
+| :white_check_mark: | "Study Now" mode filtering due cards |
+| :white_check_mark: | Mastery tracking (Again / Good / Easy) |
+| :white_check_mark: | Category, status and difficulty filters |
+| :white_check_mark: | CSV and JSON export |
+| :white_check_mark: | Dark mode with system detection |
+| :white_check_mark: | Local storage persistence |
+| :white_check_mark: | Heuristic fallback parser when AI is unavailable |
+| :white_check_mark: | Rate limiting on API endpoint |
+| :white_check_mark: | Keyboard navigation between cards |
+| :white_check_mark: | Responsive design (mobile + desktop) |
+| :white_check_mark: | Clean visual design with muted color palette |
+
+---
+
+## License
+
+MIT
+
+---
+
+<p align="center">
+  <sub>Built with :blue_heart: by <a href="https://github.com/uxdreaming">uxdreaming</a></sub>
+</p>

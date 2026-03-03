@@ -10,6 +10,10 @@ interface FileUploadProps {
   onClearFiles: () => void;
   loading: boolean;
   compact?: boolean;
+  difficulty: string;
+  onDifficultyChange: (d: string) => void;
+  count: number;
+  onCountChange: (c: number) => void;
 }
 
 const MAX_SIZE = 10 * 1024 * 1024; // 10MB per file
@@ -20,6 +24,14 @@ const ACCEPTED_MIME_TYPES = [
   "text/markdown",
   "text/x-markdown",
 ];
+
+const DIFFICULTY_OPTIONS = [
+  { value: "easy", label: "Basic" },
+  { value: "medium", label: "Intermediate" },
+  { value: "hard", label: "Advanced" },
+];
+
+const COUNT_OPTIONS = [5, 10, 15, 20, 30];
 
 function getFileIcon(fileName: string) {
   const ext = fileName.substring(fileName.lastIndexOf(".")).toLowerCase();
@@ -65,6 +77,10 @@ export default function FileUpload({
   onClearFiles,
   loading,
   compact = false,
+  difficulty,
+  onDifficultyChange,
+  count,
+  onCountChange,
 }: FileUploadProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [dragOver, setDragOver] = useState(false);
@@ -74,6 +90,8 @@ export default function FileUpload({
     (files: FileList | File[]) => {
       setError(null);
       const valid: File[] = [];
+      const errors: string[] = [];
+
       for (const file of Array.from(files)) {
         const ext = file.name
           .substring(file.name.lastIndexOf("."))
@@ -81,15 +99,22 @@ export default function FileUpload({
         const hasValidExt = ACCEPTED_EXTENSIONS.includes(ext);
         const hasValidMime = ACCEPTED_MIME_TYPES.includes(file.type);
         if (!hasValidExt && !hasValidMime) {
-          setError(`"${file.name}" skipped — invalid type. Allowed: .pdf, .txt, .md`);
+          errors.push(`${file.name} (invalid type)`);
           continue;
         }
         if (file.size > MAX_SIZE) {
-          setError(`"${file.name}" skipped — exceeds 10MB limit.`);
+          errors.push(`${file.name} (exceeds 10MB)`);
           continue;
         }
         valid.push(file);
       }
+
+      if (errors.length > 0) {
+        setError(
+          `${errors.length} file${errors.length > 1 ? "s" : ""} skipped: ${errors.join(", ")}`
+        );
+      }
+
       if (valid.length > 0) onFilesAdded(valid);
     },
     [onFilesAdded]
@@ -118,6 +143,54 @@ export default function FileUpload({
     if (files.length > 0) validateAndAdd(files);
   };
 
+  const settingsBar = (
+    <div className="flex flex-col gap-3">
+      {/* Difficulty selector */}
+      <div>
+        <label className="mb-1.5 block text-xs font-medium text-zinc-500 dark:text-zinc-400">
+          Difficulty
+        </label>
+        <div className="flex rounded-lg border border-zinc-200 dark:border-zinc-700">
+          {DIFFICULTY_OPTIONS.map((opt) => (
+            <button
+              key={opt.value}
+              onClick={() => onDifficultyChange(opt.value)}
+              className={`flex-1 px-3 py-2 text-xs font-medium transition-colors first:rounded-l-lg last:rounded-r-lg ${
+                difficulty === opt.value
+                  ? "bg-blue-600 text-white"
+                  : "bg-white text-zinc-600 hover:bg-zinc-50 dark:bg-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-700"
+              }`}
+            >
+              {opt.label}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {/* Count selector */}
+      <div>
+        <label className="mb-1.5 block text-xs font-medium text-zinc-500 dark:text-zinc-400">
+          Number of cards
+        </label>
+        <div className="flex rounded-lg border border-zinc-200 dark:border-zinc-700">
+          {COUNT_OPTIONS.map((n) => (
+            <button
+              key={n}
+              onClick={() => onCountChange(n)}
+              className={`flex-1 px-2 py-2 text-xs font-medium transition-colors first:rounded-l-lg last:rounded-r-lg ${
+                count === n
+                  ? "bg-blue-600 text-white"
+                  : "bg-white text-zinc-600 hover:bg-zinc-50 dark:bg-zinc-800 dark:text-zinc-400 dark:hover:bg-zinc-700"
+              }`}
+            >
+              {n}
+            </button>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+
   if (compact && selectedFiles.length > 0) {
     return (
       <div className="flex flex-col gap-2">
@@ -143,6 +216,7 @@ export default function FileUpload({
             </button>
           </div>
         ))}
+        {settingsBar}
         <button
           onClick={onGenerate}
           disabled={loading}
@@ -156,7 +230,7 @@ export default function FileUpload({
 
   return (
     <div className="flex flex-col gap-3">
-      {selectedFiles.length > 0 && (
+      {selectedFiles.length > 0 ? (
         <div className="rounded-xl border-2 border-blue-200 bg-blue-50/50 p-5 dark:border-blue-900 dark:bg-blue-950/30">
           <div className="flex flex-col gap-3">
             {selectedFiles.map((file, i) => (
@@ -184,25 +258,27 @@ export default function FileUpload({
             ))}
           </div>
 
-          <div className="mt-4 flex items-center gap-3">
+          <div className="mt-3">
+            {settingsBar}
+          </div>
+
+          <div className="mt-3 flex items-center gap-3">
             <button
               onClick={() => inputRef.current?.click()}
-              className="rounded-lg border border-zinc-300 px-4 py-3 text-sm font-medium text-zinc-600 transition-colors hover:bg-zinc-100 dark:border-zinc-600 dark:text-zinc-400 dark:hover:bg-zinc-800"
+              className="rounded-lg border border-zinc-300 px-4 py-2.5 text-sm font-medium text-zinc-600 transition-colors hover:bg-zinc-100 dark:border-zinc-600 dark:text-zinc-400 dark:hover:bg-zinc-800"
             >
-              + Add more files
+              + Add more
             </button>
             <button
               onClick={onGenerate}
               disabled={loading}
-              className="flex-1 rounded-lg bg-blue-600 py-3 font-medium text-white transition-colors hover:bg-blue-700 disabled:opacity-50"
+              className="flex-1 rounded-lg bg-blue-600 py-2.5 font-medium text-white transition-colors hover:bg-blue-700 disabled:opacity-50"
             >
-              {loading ? "Generating..." : `Generate Flashcards (${selectedFiles.length} file${selectedFiles.length > 1 ? "s" : ""})`}
+              {loading ? "Generating..." : `Generate (${selectedFiles.length} file${selectedFiles.length > 1 ? "s" : ""})`}
             </button>
           </div>
         </div>
-      )}
-
-      {selectedFiles.length === 0 && (
+      ) : (
         <div
           onDragOver={handleDragOver}
           onDragLeave={handleDragLeave}
