@@ -1,5 +1,3 @@
-import { PDFParse } from "pdf-parse";
-
 export async function extractText(
   buffer: Buffer,
   fileName: string,
@@ -9,6 +7,7 @@ export async function extractText(
 
   if (ext === ".pdf" || mimeType === "application/pdf") {
     try {
+      const { PDFParse } = await import("pdf-parse");
       const pdf = new PDFParse({ data: new Uint8Array(buffer) });
       const result = await pdf.getText();
       const text = result.text || "";
