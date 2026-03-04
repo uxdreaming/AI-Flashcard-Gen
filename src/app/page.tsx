@@ -91,12 +91,21 @@ export default function Home() {
         signal: controller.signal,
       });
 
-      if (!res.ok) {
-        const data = await res.json();
-        throw new Error(data.error || "Failed to generate flashcards");
+      const text = await res.text();
+      let data;
+      try {
+        data = JSON.parse(text);
+      } catch {
+        throw new Error(
+          res.status === 504
+            ? "The request timed out. Try with fewer or smaller files."
+            : `Server error (${res.status}). Please try again.`
+        );
       }
 
-      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || "Failed to generate flashcards");
+      }
 
       if (data.warning) {
         setWarning(data.warning);
