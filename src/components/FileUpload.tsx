@@ -232,7 +232,7 @@ export default function FileUpload({
     <div className="flex flex-col gap-3">
       {selectedFiles.length > 0 ? (
         <div className="rounded-xl border-2 border-blue-200 bg-blue-50/50 p-5 dark:border-blue-900 dark:bg-blue-950/30">
-          <div className="flex flex-col gap-3">
+          <div className="flex max-h-52 flex-col gap-3 overflow-y-auto">
             {selectedFiles.map((file, i) => (
               <div key={`${file.name}-${i}`} className="flex items-center gap-4">
                 {getFileIcon(file.name)}
