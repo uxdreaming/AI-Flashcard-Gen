@@ -242,6 +242,36 @@ export default function Home() {
                   </div>
                 </div>
 
+                {/* Try Demo button */}
+                <button
+                  onClick={() => {
+                    const demoCards = [
+                      { question: "What is User Experience (UX) Design?", answer: "UX Design is the process of creating products that provide meaningful and relevant experiences to users, involving branding, design, usability, and function.", category: "UX Fundamentals", difficulty: "easy" as Difficulty },
+                      { question: "What are Jakob Nielsen's 5 quality components of usability?", answer: "Learnability, efficiency, memorability, errors, and satisfaction.", category: "Usability", difficulty: "medium" as Difficulty },
+                      { question: "What are the three WCAG 2.1 conformance levels?", answer: "Level A (minimum), Level AA (mid-range, most common target), and Level AAA (highest).", category: "Accessibility", difficulty: "medium" as Difficulty },
+                      { question: "What is Information Architecture (IA)?", answer: "IA is the structural design of shared information environments. It involves organizing, structuring, and labeling content effectively using methods like card sorting, tree testing, and sitemap creation.", category: "UX Fundamentals", difficulty: "easy" as Difficulty },
+                      { question: "What is the difference between qualitative and quantitative UX research?", answer: "Qualitative methods (interviews, usability testing) explore the 'why' behind behavior with small samples. Quantitative methods (surveys, analytics, A/B testing) measure the 'what' with large samples for statistical significance.", category: "UX Research", difficulty: "medium" as Difficulty },
+                      { question: "Explain Fitts's Law and its implication for UI design.", answer: "Fitts's Law states that the time to reach a target depends on its size and distance from the cursor. In UI design, this means important actions should be large and close to the user's current focus.", category: "Interaction Design", difficulty: "hard" as Difficulty },
+                      { question: "What are the 5 phases of Design Thinking?", answer: "1. Empathize (research users), 2. Define (synthesize into a problem statement), 3. Ideate (brainstorm solutions), 4. Prototype (build low-fidelity representations), 5. Test (gather feedback with real users).", category: "Design Thinking", difficulty: "easy" as Difficulty },
+                      { question: "What is a design token and what types exist?", answer: "Design tokens are the smallest units of a design system that store visual attributes as named values. Types include color, spacing, typography, shadow, and border radius tokens.", category: "Design Systems", difficulty: "medium" as Difficulty },
+                      { question: "What is Atomic Design and what are its five levels?", answer: "Atomic Design breaks components into: Atoms (buttons, inputs), Molecules (search bar = input + button), Organisms (navigation header), Templates (page layouts), and Pages (templates with real content).", category: "Design Systems", difficulty: "hard" as Difficulty },
+                      { question: "What is Hicks's Law?", answer: "Hicks's Law states that decision time increases logarithmically with the number of choices. In UI design, this means reducing options and using progressive disclosure to simplify decisions.", category: "Interaction Design", difficulty: "medium" as Difficulty },
+                    ];
+                    setFlashcards(demoCards.map(c => ({
+                      ...c,
+                      id: uuidv4(),
+                      status: "new" as const,
+                      createdAt: Date.now(),
+                    })));
+                  }}
+                  className="mt-1 flex w-fit items-center gap-2 rounded-lg border border-zinc-200 bg-white px-4 py-2 text-sm font-medium text-zinc-600 transition-colors hover:border-blue-300 hover:bg-blue-50 hover:text-blue-600 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-400 dark:hover:border-blue-600 dark:hover:bg-blue-950/30 dark:hover:text-blue-400"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <polygon points="5 3 19 12 5 21 5 3" />
+                  </svg>
+                  Try demo
+                </button>
+
               </div>
 
               <div className="flex flex-col gap-3">

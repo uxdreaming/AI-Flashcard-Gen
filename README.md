@@ -24,8 +24,28 @@ AI Flashcard Gen is a study tool that extracts key concepts from your documents 
 
 Built for students, professionals and anyone who learns. Drop your material, get flashcards, study with spaced repetition.
 
+### Study View — Single Card
+
 <p align="center">
-  <img src="docs/Flashcards.png" alt="Flashcards Preview" width="100%" />
+  <img src="docs/Flashcards.png" alt="Single card view with sidebar" width="100%" />
+</p>
+
+### Answer Side — Mastery Tracking
+
+<p align="center">
+  <img src="docs/flashcard-answer.png" alt="Flashcard answer with spaced repetition buttons" width="100%" />
+</p>
+
+### Gallery View
+
+<p align="center">
+  <img src="docs/gallery-view.png" alt="Gallery grid view of all flashcards" width="100%" />
+</p>
+
+### Concept Map
+
+<p align="center">
+  <img src="docs/concept-map.png" alt="Interactive force-directed concept map" width="100%" />
 </p>
 
 ---
@@ -133,6 +153,76 @@ Document Upload  →  Text Extraction  →  AI Analysis  →  Flashcard Generati
 4. **Study** — Review cards in single view, gallery or concept map with spaced repetition
 5. **Listen** — Use text-to-speech to hear questions and answers
 6. **Track** — Monitor mastery progress with "Study Now" for due reviews
+
+---
+
+## Read Mode: Bilingual Text-to-Speech
+
+One of the most technically interesting features is **Read Mode** — a text-to-speech system that automatically detects whether a flashcard is in English or Spanish and reads it aloud in the correct language.
+
+### The Problem
+
+The Web Speech API requires you to specify a language code (`en-US`, `es-ES`) before speaking. If you set the wrong language, the speech engine mispronounces everything — an English voice reading Spanish sounds broken, and vice versa. Since flashcards can contain content in either language (or mixed), the system needs to figure out the language on its own, per card, in real time.
+
+### How Language Detection Works
+
+Instead of using an external library or API call, the solution uses a **regex-based heuristic** that checks for Spanish-specific patterns:
+
+```typescript
+const spanishPattern = /[áéíóúñ¿¡]|(\b(el|la|los|las|de|del|en|es|un|una|que|por|con|para|como|más|pero|este|esta)\b)/i;
+```
+
+This catches two signals:
+- **Diacritical characters** — `á`, `é`, `í`, `ó`, `ú`, `ñ`, `¿`, `¡` are strong indicators of Spanish text
+- **High-frequency words** — Articles (`el`, `la`, `los`, `las`), prepositions (`de`, `en`, `por`, `con`, `para`) and common words (`que`, `más`, `pero`) that appear in virtually any Spanish sentence
+
+If either pattern matches, the card is treated as Spanish (`es-ES`). Otherwise it defaults to English (`en-US`). This zero-dependency approach runs instantly and handles the vast majority of real-world study content correctly.
+
+### Voice Selection
+
+After detecting the language, the system queries the browser's available voices and picks one that matches:
+
+```typescript
+const voices = window.speechSynthesis.getVoices();
+const matchingVoice = voices.find((v) => v.lang.startsWith(lang));
+```
+
+This is important because different browsers and operating systems ship different voice sets. On Chrome, Google's voices are available. On macOS, Apple's system voices are used. The code gracefully falls back to the default voice if no match is found.
+
+### Auto-Read Mode
+
+Beyond manual playback (clicking the speaker icon), there's an **Auto-Read** toggle in the sidebar that automatically reads each question aloud as you navigate between cards. This creates a hands-free study experience — useful for auditory learners or when reviewing cards away from the screen.
+
+The auto-read triggers on card index changes but only in single-card view:
+
+```typescript
+useEffect(() => {
+  if (autoRead && activeCards[currentIndex] && viewMode === "single") {
+    speak(activeCards[currentIndex].question);
+  }
+}, [currentIndex, autoRead, viewMode]);
+```
+
+### Integration Points
+
+The audio system is structured as a custom React hook (`useAudio`) that exposes a clean API:
+
+| Export | Purpose |
+|---|---|
+| `speak(text)` | Detect language, select voice, and read text aloud |
+| `stop()` | Cancel any active speech |
+| `speaking` | Boolean state for UI feedback (icon highlighting) |
+| `autoRead` | Whether auto-read mode is enabled |
+| `toggleAutoRead()` | Toggle auto-read on/off |
+
+This hook is consumed by `FlashcardList` (auto-read logic) and passed down to `FlashcardItem` (manual playback buttons on both the question and answer sides of each card).
+
+### What Made This Challenging
+
+- **No external dependencies** — The entire feature runs on the native Web Speech API, which means zero bundle size impact but also dealing with browser inconsistencies in voice availability and timing
+- **Per-card language switching** — Each card can be a different language, so detection happens at speak time, not once globally
+- **Speech lifecycle management** — Canceling previous speech before starting new speech, cleaning up on unmount, and syncing the `speaking` state across components required careful ref and effect management
+- **Cross-browser voice availability** — `getVoices()` returns an empty array on first call in some browsers (it loads asynchronously), which the code handles by falling back gracefully
 
 ---
 
