@@ -138,6 +138,81 @@ Navigate to **[http://localhost:3000](http://localhost:3000)** and start uploadi
 
 ---
 
+## Study Guide
+
+A quick walkthrough of the full experience, from uploading your first file to mastering your deck.
+
+### 1. Upload your material
+
+Drop one or more files into the upload zone (or click to browse). PDF, TXT and Markdown are supported. You can also hit **Try demo** to skip this step and explore with a pre-built deck.
+
+<p align="center">
+  <img src="docs/cover.png" alt="Landing page with upload zone" width="100%" />
+</p>
+
+### 2. Configure and generate
+
+Once your files are loaded, pick a **difficulty** (Basic, Intermediate, Advanced) and how many cards you want (5 to 30). Hit **Generate** — the AI reads your documents, identifies the key concepts and creates question/answer pairs organized by category.
+
+### 3. Study in single card view
+
+This is the main study mode. The sidebar lists all your cards with category colors and mastery dots. Click any card to jump to it, or use the **arrow keys** to navigate. Click the card to **flip** it and reveal the answer.
+
+<p align="center">
+  <img src="docs/Flashcards.png" alt="Single card view showing a question" width="100%" />
+</p>
+
+### 4. Rate your knowledge
+
+After flipping a card, rate how well you knew the answer:
+
+- **Again** — You didn't know it. The card resets and comes back soon.
+- **Good** — You got it but needed effort. The interval grows moderately.
+- **Easy** — You knew it instantly. The card is pushed further into the future.
+
+This drives the **SM-2 spaced repetition algorithm** — cards you struggle with appear more often, cards you master fade into longer review cycles.
+
+<p align="center">
+  <img src="docs/flashcard-answer.png" alt="Answer side with mastery buttons" width="100%" />
+</p>
+
+### 5. Use Study Now for due reviews
+
+The **Study Now** button in the sidebar filters your deck to only show cards that are due for review right now. A red badge tells you how many are waiting. When you've reviewed them all, you'll see "All caught up!" with a countdown to your next review.
+
+### 6. Browse with Gallery view
+
+Switch to the grid icon in the sidebar to see all your cards at a glance. Each mini-card shows the question, category color, and difficulty tag. Click any card to jump back to single view and study it.
+
+<p align="center">
+  <img src="docs/gallery-view.png" alt="Gallery grid showing all cards" width="100%" />
+</p>
+
+### 7. Explore the Concept Map
+
+The graph icon opens an interactive force-directed map. Category nodes are large circles connected to their individual cards. Drag nodes around to explore how your topics relate. Click any card node to jump to it.
+
+<p align="center">
+  <img src="docs/concept-map.png" alt="Concept map with category clusters" width="100%" />
+</p>
+
+### 8. Listen with Read Mode
+
+Click the **speaker icon** on any card to hear it read aloud. The app auto-detects whether the text is in English or Spanish and picks the right voice. Turn on **Auto-read** in the sidebar to have every card read automatically as you navigate — great for hands-free review or auditory learning.
+
+### 9. Filter, edit and export
+
+- **Filter** by category, mastery status (new / learning / mastered) or difficulty from the sidebar
+- **Edit** any card inline — click the pencil icon to change the question, answer or category
+- **Delete** cards you don't need
+- **Export** your deck as CSV or Anki-compatible format from the export menu
+
+### 10. Save your progress
+
+Click **Save** to persist your deck in the browser's local storage. Next time you open the app, your cards, mastery levels and review schedules are right where you left them — no account needed.
+
+---
+
 ## How It Works
 
 ```
